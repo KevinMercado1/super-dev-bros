@@ -39,6 +39,8 @@ function preload () {
         "assets/entities/mario.png",
         { frameWidth: 18, frameHeight: 16 }
     )
+
+    this.load.audio('jump', 'assets/sound/effects/jump.mp3')
 }
 
 function create () {
@@ -52,6 +54,7 @@ function create () {
     .create(0, config.height - 16, "floorbricks")
     .setOrigin(0, 0.5)
     .refreshBody()
+
     this.floor
     .create(150, config.height -16, "floorbricks")
     .setOrigin(0, 0.5)
@@ -74,14 +77,18 @@ function create () {
 } 
 
 function update () {
+
+    if (this.mario.isDead) return
+
     if (this.keys.left.isDown) {
+        this.mario.anims.play("mario-walk", true)
         this.mario.x -= 2
         this.mario.flipX =  true
-        this.mario.anims.play("mario-walk", true)
+        
     } else if (this.keys.right.isDown) {
+        this.mario.anims.play("mario-walk",true)
         this.mario.x += 2
         this.mario.flipX =  false
-        this.mario.anims.play("mario-walk",true)
     } else {
         this.mario.anims.play("mario-idle",true)
     }
@@ -89,9 +96,20 @@ function update () {
     if(this.keys.up.isDown && this.mario.body.touching.down) {
         this.mario.setVelocityY(-300)
         this.mario.anims.play("mario-jump", true)
+        this.sound.add('jump', { volume: 0.2}).play()
     }
 
-    if(this.mario.y >= config.height) {
+    if (this.mario.y >= config.height) {
+        this.mario.isDead = true
         this.mario.anims.play("mario-dead")
+        this.mario.setCollideWorldBounds(false)
+        
+        setTimeout(() => {
+        this.mario.setVelocityY(-350)
+        }, 100)
+        
+        setTimeout(() => {
+        this.scene.restart () 
+       }, 2000)
     }
 }
