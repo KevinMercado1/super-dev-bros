@@ -1,8 +1,16 @@
-const INIT_AUDIOS = [{
-  key: 'gameover', path: 'assets/sound/music/gameover.mp3'
-},
-{ key: 'goomba-stomp', path: 'assets/sound/effects/goomba-stomp.wav' },
-{ key: 'coin-pickup', path: 'assets/sound/effects/coin.mp3' }
+const INIT_AUDIOS = [
+  {
+    key: 'gameover',
+    path: 'assets/sound/music/gameover.mp3'
+  },
+  {
+    key: 'goomba-stomp',
+    path: 'assets/sound/effects/goomba-stomp.wav'
+  },
+  {
+    key: 'coin-pickup',
+    path: 'assets/sound/effects/coin.mp3'
+  }
 ]
 
 export const initAudio = ({ load }) => {

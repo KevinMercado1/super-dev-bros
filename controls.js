@@ -1,22 +1,41 @@
+const MARIO_ANIMATIONS = {
+  grown: {
+    idle: 'mario-grown-idle',
+    walk: 'mario-grown-walk',
+    jump: 'mario-grown-jump'
+  },
+  normal: {
+    idle: 'mario-idle',
+    walk: 'mario-walk',
+    jump: 'mario-jump'
+  }
+}
+
 export function checkControls ({ mario, keys }) {
-  const isMarioTouchinFloor = mario.body.touching.down
-  const isLeftKeysDown = keys.left.isDown
-  const isRightKeysDown = keys.right.isDown
+  const isMarioTouchingFloor = mario.body.touching.down
+
+  const isLeftKeyDown = keys.left.isDown
+  const isRightKeyDown = keys.right.isDown
   const isUpKeyDown = keys.up.isDown
 
-  if (isLeftKeysDown) {
-    isMarioTouchinFloor && mario.anims.play('mario-walk', true)
+  if (mario.isDead) return
+  if (mario.isBlocked) return
+
+  const marioAnimatios = mario.isGrown ? MARIO_ANIMATIONS.grown : MARIO_ANIMATIONS.normal
+
+  if (isLeftKeyDown) {
+    isMarioTouchingFloor && mario.anims.play('mario-walk', true)
     mario.x -= 2
     mario.flipX = true
-  } else if (isRightKeysDown) {
-    isMarioTouchinFloor && mario.anims.play('mario-walk', true)
+  } else if (isRightKeyDown) {
+    isMarioTouchingFloor && mario.anims.play('mario-walk', true)
     mario.x += 2
     mario.flipX = false
-  } else if (isMarioTouchinFloor) {
-    mario.anims.play('mario-idle', true)
+  } else if (isMarioTouchingFloor) {
+    mario.anims.play(marioAnimatios.idle, true)
   }
 
-  if (isUpKeyDown && isMarioTouchinFloor) {
+  if (isUpKeyDown && isMarioTouchingFloor) {
     mario.setVelocityY(-300)
     mario.anims.play('mario-jump', true)
   }
